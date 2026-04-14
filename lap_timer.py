@@ -11,6 +11,11 @@ def init(max_laps):
     """
     Crea y retorna un diccionario para almacenar hasta max_laps vueltas.
     """
+    return{
+        'max': max_laps,
+        'times': [],
+        'total': 0.0
+    }
     # TODO: Implementar
     pass
 
@@ -20,6 +25,10 @@ def add_lap(timer, time):
     Agrega una nueva vuelta con el tiempo especificado.
     Retorna el diccionario modificado.
     """
+    if len(timer['times']) < timer['max']:
+        timer['times'].append(time)
+        timer['total'] = sum(timer['times'])
+    return timer
     # TODO: Implementar
     pass
 
@@ -28,6 +37,7 @@ def count(timer):
     """
     Retorna el numero de vueltas agregadas.
     """
+    return len(timer['times'])
     # TODO: Implementar
     pass
 
@@ -36,6 +46,7 @@ def cumulative_time(timer):
     """
     Retorna el tiempo acumulado de todas las vueltas.
     """
+    return timer['total']
     # TODO: Implementar
     pass
 
@@ -45,6 +56,7 @@ def format_laps(timer):
     Retorna una representacion en cadena de los tiempos.
     Formato: [t1, t2, t3, ..., tn]
     """
+    return str(timer['times'])
     # TODO: Implementar
     pass
 
@@ -53,6 +65,7 @@ def fastest_lap(timer):
     """
     Retorna el tiempo mas rapido de cualquier vuelta.
     """
+    return min(timer['times']) if timer['times'] else None
     # TODO: Implementar
     pass
 
@@ -61,6 +74,14 @@ def fastest_multi_lap(timer, k):
     """
     Retorna el tiempo acumulado mas rapido de cualquier k vueltas consecutivas.
     """
+    if len(timer['times']) < k:
+        return None
+    tiempo_mi= float('inf')
+    for i in range(len(timer['times']) - k + 1):
+        suma = sum(timer['times'][i:i+k])
+        tiempo_mi = min(tiempo_mi, suma)
+    return tiempo_mi
+
     # TODO: Implementar
     pass
 
@@ -70,6 +91,17 @@ def longest_decreasing_streak(timer):
     Retorna la longitud maxima de una secuencia de vueltas consecutivas
     donde los tiempos disminuyen estrictamente.
     """
+    if not timer['times']:
+        return 0
+    falla = 1
+    racha = 1
+    for i in range(1, len(timer['times'])):
+        if timer['times'][i] < timer['times'][i - 1]:
+            falla += 1
+            racha = max(racha, falla)
+        else:
+            falla = 1
+    return racha
     # TODO: Implementar
     pass
 
